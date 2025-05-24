@@ -83,7 +83,7 @@ namespace TestToken.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpPut("DeleteCategory/{id}")]
+        [HttpDelete("DeleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             if (!ModelState.IsValid)
