@@ -46,41 +46,6 @@ namespace TestToken.Repositories.Services
             };
         }
 
-        //public async Task<ResponseDto> DeleteBrand(int id)
-        //{
-        //    var existingBrand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == id);
-        //    if (existingBrand == null)
-        //    {
-        //        return new ResponseDto
-        //        {
-        //            Message = "Brand not found!",
-        //            IsSucceeded = false,
-        //            StatusCode = 404
-        //        };
-        //    }
-
-        //    bool hasProducts = await _context.Products.AnyAsync(p => p.BrandId == id);
-
-        //    if (hasProducts)
-        //    {
-        //        return new ResponseDto
-        //        {
-        //            Message = "Cannot delete brand because there are products associated with it.",
-        //            IsSucceeded = false,
-        //            StatusCode = 400
-        //        };
-        //    }
-
-        //    _context.Brands.Remove(existingBrand);
-        //    await _context.SaveChangesAsync();
-
-        //    return new ResponseDto
-        //    {
-        //        Message = "Brand deleted successfully",
-        //        IsSucceeded = true,
-        //        StatusCode = 200
-        //    };
-        //}
         public async Task<ResponseDto> DeleteBrand(int id)
         {
             var existingBrand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == id);
@@ -94,19 +59,54 @@ namespace TestToken.Repositories.Services
                 };
             }
 
-            var products = _context.Products.Where(p => p.BrandId == id);
-            _context.Products.RemoveRange(products);
+            bool hasProducts = await _context.Products.AnyAsync(p => p.BrandId == id);
+
+            if (hasProducts)
+            {
+                return new ResponseDto
+                {
+                    Message = "Cannot delete brand because there are products associated with it.",
+                    IsSucceeded = false,
+                    StatusCode = 400
+                };
+            }
 
             _context.Brands.Remove(existingBrand);
             await _context.SaveChangesAsync();
 
             return new ResponseDto
             {
-                Message = "Brand and its products deleted successfully",
+                Message = "Brand deleted successfully",
                 IsSucceeded = true,
                 StatusCode = 200
             };
         }
+        //public async Task<ResponseDto> DeleteBrand(int id)
+        //{
+        //    var existingBrand = await _context.Brands.FirstOrDefaultAsync(b => b.Id == id);
+        //    if (existingBrand == null)
+        //    {
+        //        return new ResponseDto
+        //        {
+        //            Message = "Brand not found!",
+        //            IsSucceeded = false,
+        //            StatusCode = 404
+        //        };
+        //    }
+
+        //    var products = _context.Products.Where(p => p.BrandId == id);
+        //    _context.Products.RemoveRange(products);
+
+        //    _context.Brands.Remove(existingBrand);
+        //    await _context.SaveChangesAsync();
+
+        //    return new ResponseDto
+        //    {
+        //        Message = "Brand and its products deleted successfully",
+        //        IsSucceeded = true,
+        //        StatusCode = 200
+        //    };
+        //}
 
 
         public async Task<ResponseDto> GetAllBrands()
