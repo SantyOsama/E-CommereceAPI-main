@@ -50,7 +50,7 @@ namespace TestToken.Repositories.Services
                 audience: _configuration["JWT:Audience"],
                 claims:Claims,
                 signingCredentials : credentials,
-                expires: DateTime.UtcNow.AddHours(1)
+                expires: DateTime.UtcNow.AddDays(1)
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
 

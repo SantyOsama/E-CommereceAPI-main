@@ -32,6 +32,41 @@ namespace TestToken.Repositories.Services
             };
         }
 
+        //public async Task<ResponseDto> DeleteCategory(int id)
+        //{
+        //    var category = await _context.Categories.FindAsync(id);
+        //    if (category == null)
+        //    {
+        //        return new ResponseDto
+        //        {
+        //            Message = "Category not found!",
+        //            IsSucceeded = false,
+        //            StatusCode = 404,
+        //        };
+        //    }
+
+        //    bool hasProducts = await _context.Products.AnyAsync(p => p.CategoryId == id);
+
+        //    if (hasProducts)
+        //    {
+        //        return new ResponseDto
+        //        {
+        //            Message = "Cannot delete category because there are products associated with it.",
+        //            IsSucceeded = false,
+        //            StatusCode = 400,  
+        //        };
+        //    }
+
+        //    _context.Categories.Remove(category);
+        //    await _context.SaveChangesAsync();
+
+        //    return new ResponseDto
+        //    {
+        //        Message = "Category deleted successfully",
+        //        IsSucceeded = true,
+        //        StatusCode = 200
+        //    };
+        //}
         public async Task<ResponseDto> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
@@ -44,16 +79,22 @@ namespace TestToken.Repositories.Services
                     StatusCode = 404,
                 };
             }
-             _context.Categories.Remove(category);
+
+            var products = _context.Products.Where(p => p.CategoryId == id);
+            _context.Products.RemoveRange(products);
+
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+
             return new ResponseDto
             {
-                Message = "Category deleted successfully",
+                Message = "Category and its products deleted successfully",
                 IsSucceeded = true,
                 StatusCode = 200
             };
-                    
         }
+
+
 
         public async Task<ResponseDto> GetAllCategories()
         {

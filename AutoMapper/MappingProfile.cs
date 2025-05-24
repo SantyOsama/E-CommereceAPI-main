@@ -22,7 +22,13 @@ namespace TestToken.AutoMapper
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Order,OrderDto>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
-            CreateMap<Product,ProductDto>().ReverseMap();
+            CreateMap<ProductDto, Product>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()) 
+                .ForMember(dest => dest.Category, opt => opt.Ignore()) 
+                .ForMember(dest => dest.Brand, opt => opt.Ignore())
+                .ForMember(dest => dest.Reviews, opt => opt.Ignore());
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.ImageFile, opt => opt.Ignore());
             CreateMap<Review, ReviewDto>().ReverseMap();
             CreateMap<WishList,WishlistDto>().ReverseMap();
             CreateMap<WishlistItemsDto, WishListItem>().ReverseMap();

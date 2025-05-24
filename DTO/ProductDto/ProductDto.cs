@@ -12,7 +12,7 @@
         public IFormFile ImageFile { get; set; } 
         public string? categoryName { get; set; }
         public string? BrandName { get; set; }
-        public int? categoryId { get; set; }
-        public int? BrandId { get; set; }
+        public int categoryId { get; set; }
+        public int BrandId { get; set; }
     }
 }
