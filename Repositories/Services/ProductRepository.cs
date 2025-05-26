@@ -147,8 +147,8 @@ namespace TestToken.Repositories.Services
            var existingProduct = await _context.Products
                 .Include(c=>c.Category)
                 .Include(b=>b.Brand)
-                .AsNoTracking().FirstOrDefaultAsync();
-            if(existingProduct is null)
+                .AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if (existingProduct is null)
             {
                 return new ResponseDto
                 {

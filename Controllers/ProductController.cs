@@ -108,6 +108,21 @@ namespace TestToken.Controllers
             return StatusCode(response.StatusCode, new { response.Message });
         }
 
+        //[Authorize(Policy = "Admin")]
+        //[HttpPatch("EditProduct")]
+        //public async Task<IActionResult> PatchEditProduct(int id, [FromForm] ProductDto productDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    var response = await _unitOfWork.Products.UpdateProduct(id, productDto);
+
+        //    if (response.IsSucceeded)
+        //        return Ok(response);
+
+        //    return StatusCode(response.StatusCode, new { response.Message });
+        //}
+
         [Authorize(Policy = "Admin")]
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
