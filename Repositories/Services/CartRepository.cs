@@ -44,8 +44,12 @@ namespace TestToken.Repositories.Services
             var updatedCart = _mapper.Map<CartDto>(newCart);
             return new ResponseDto
             {
+                model = new
+                {
+                    cartId = newCart.Id,
+                },
                 Message = "New cart added successfully!",
-                IsSucceeded= true,
+                IsSucceeded = true,
                 StatusCode = 201
             };
         }

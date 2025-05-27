@@ -73,6 +73,7 @@ namespace TestToken.Repositories.Services
                 StatusCode = 200,
                 model = new
                 {
+                    ID = user.Id,
                     IsAuthenticated = true,
                     token = token,
                     RefreshToken = refreshToken,
@@ -115,8 +116,8 @@ namespace TestToken.Repositories.Services
 
             await _userManager.AddToRoleAsync(user, role);
             //  var token = _tokenService.GenerateToken(user);
-            await _emailService.sendEmailAsync(user.Email!, "OTP Email verfication", $"Hi {register.UserName} , " +
-                $"use this code below to verify your account {otp}");
+            //await _emailService.sendEmailAsync(user.Email!, "OTP Email verfication", $"Hi {register.UserName} , " +
+               // $"use this code below to verify your account {otp}");
             return new ResponseDto
             {
                 Message = "OTP sent to your email. Please verify to complete registration",
