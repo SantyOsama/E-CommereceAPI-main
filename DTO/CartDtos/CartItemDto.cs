@@ -6,6 +6,5 @@ namespace TestToken.DTO.CartDtos
         public int quantity { get; set; }
         public int? CartId { get; set; }
         public int? ProductId { get; set; }
-        public ProductDto Product { get; set; }
     }
 }

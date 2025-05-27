@@ -72,7 +72,7 @@ namespace TestToken.Controllers
 
         [Authorize(Policy = "Admin")]
         [HttpPut("UpdateCategory/{id}")]
-        public async Task<IActionResult> UpdatedCategory(int id ,CategoryDto categoryDto)
+        public async Task<IActionResult> UpdatedCategory(int id , [FromBody] CategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

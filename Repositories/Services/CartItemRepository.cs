@@ -14,7 +14,8 @@ namespace TestToken.Repositories.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public CartItemRepository(ApplicationDbContext context,IMapper mapper):base(context)
+
+        public CartItemRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _context = context;
             _mapper = mapper;
@@ -22,45 +23,56 @@ namespace TestToken.Repositories.Services
 
         public async Task<ResponseDto> GetAllItems()
         {
-            List<CartItem> cartItems = await _context.CartItems.AsNoTracking().Include(p=>p.Product).ToListAsync();
-            if(!cartItems.Any())
+            var cartItems = await _context.CartItems
+                .Include(ci => ci.Product)
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (!cartItems.Any())
             {
                 return new ResponseDto
                 {
-                    Message = "Items not found!!",
+                    Message = "Items not found!",
                     IsSucceeded = false,
                     StatusCode = 404,
                     model = new List<CartItemDto>()
                 };
             }
-            var CartList =_mapper.Map<List<CartItemDto>>(cartItems);
+
+            var dtoList = _mapper.Map<List<CartItemDto>>(cartItems);
             return new ResponseDto
             {
                 IsSucceeded = true,
                 StatusCode = 200,
-                model = CartList
+                model = dtoList
             };
         }
+
         public async Task<ResponseDto> GetItemById(int id)
         {
-            var existingItem = await _context.CartItems.Where(c=>c.Id==id).Include(p=>p.Product).FirstOrDefaultAsync();
-            if(existingItem == null)
+            var existingItem = await _context.CartItems
+                .Include(ci => ci.Product)
+                .FirstOrDefaultAsync(ci => ci.Id == id);
+
+            if (existingItem == null)
             {
                 return new ResponseDto
                 {
-                    Message="Item not found!!",
+                    Message = "Item not found!",
                     IsSucceeded = false,
                     StatusCode = 404
                 };
             }
-            var cartItem = _mapper.Map<CartItemDto>(existingItem);
+
+            var dto = _mapper.Map<CartItemDto>(existingItem);
             return new ResponseDto
             {
-                IsSucceeded= true,
+                IsSucceeded = true,
                 StatusCode = 200,
-                model = cartItem
+                model = dto
             };
         }
+
         public async Task<ResponseDto> AddItem(CartItemDto item)
         {
             var cartExists = await _context.Carts.AnyAsync(c => c.Id == item.CartId);
@@ -73,19 +85,32 @@ namespace TestToken.Repositories.Services
                     StatusCode = 404
                 };
             }
+
             var productExists = await _context.Products.AnyAsync(p => p.Id == item.ProductId);
             if (!productExists)
             {
                 return new ResponseDto
                 {
-                    Message = "product you try to add doesn't exist!",
+                    Message = "Product not found!",
                     IsSucceeded = false,
                     StatusCode = 404
                 };
             }
+
+            if (item.quantity < 1)
+            {
+                return new ResponseDto
+                {
+                    Message = "Quantity must be at least 1",
+                    IsSucceeded = false,
+                    StatusCode = 400
+                };
+            }
+
             var addedItem = _mapper.Map<CartItem>(item);
             _context.CartItems.Add(addedItem);
             await _context.SaveChangesAsync();
+
             var dto = _mapper.Map<CartItemDto>(addedItem);
             return new ResponseDto
             {
@@ -99,38 +124,43 @@ namespace TestToken.Repositories.Services
         public async Task<ResponseDto> UpdateItem(int id, CartItem cartItem)
         {
             var existingItem = await _context.CartItems.FindAsync(id);
-            if(existingItem == null)
+            if (existingItem == null)
             {
                 return new ResponseDto
                 {
-                    Message="item not found!",
+                    Message = "Item not found!",
                     IsSucceeded = false,
-                    StatusCode =404
+                    StatusCode = 404
                 };
             }
-            var productExists = await _context.Products.AnyAsync(p => p.Id == cartItem.ProductId);
-            if (!productExists)
+
+            if (cartItem.Quantity < 1)
             {
                 return new ResponseDto
                 {
-                    Message = "Product not found!",
+                    Message = "Quantity must be at least 1",
                     IsSucceeded = false,
                     StatusCode = 400
                 };
             }
-            existingItem.Quantity=cartItem.Quantity;
-            existingItem.ProductId=cartItem.ProductId;
-           // _context.CartItems.Update(existingItem);
+
+            // تحديث الحقول المراد تحديثها فقط
+            existingItem.Quantity = cartItem.Quantity;
+            existingItem.ProductId = cartItem.ProductId;
+            existingItem.CartId = cartItem.CartId;
+
             await _context.SaveChangesAsync();
-            var updatedItem = _mapper.Map<CartItemDto>(existingItem);
+
+            var dto = _mapper.Map<CartItemDto>(existingItem);
             return new ResponseDto
-            { 
-                    Message = "Item updated successfully",
-                    IsSucceeded = true,
-                    StatusCode = 200,
-                    model = updatedItem
+            {
+                Message = "Item updated successfully",
+                IsSucceeded = true,
+                StatusCode = 200,
+                model = dto
             };
         }
+
         public async Task<ResponseDto> DeleteItem(int id)
         {
             var existingItem = await _context.CartItems.FindAsync(id);
@@ -138,16 +168,18 @@ namespace TestToken.Repositories.Services
             {
                 return new ResponseDto
                 {
-                    Message = "Item not found!!",
+                    Message = "Item not found!",
                     IsSucceeded = false,
                     StatusCode = 404
                 };
             }
+
             _context.CartItems.Remove(existingItem);
             await _context.SaveChangesAsync();
+
             return new ResponseDto
             {
-                Message = "Item deleted sucessfully",
+                Message = "Item deleted successfully",
                 IsSucceeded = true,
                 StatusCode = 200
             };
