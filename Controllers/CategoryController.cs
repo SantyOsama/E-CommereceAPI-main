@@ -71,7 +71,7 @@ namespace TestToken.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpPut("UpdateCategory")]
+        [HttpPut("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdatedCategory(int id ,CategoryDto categoryDto)
         {
             if (!ModelState.IsValid)

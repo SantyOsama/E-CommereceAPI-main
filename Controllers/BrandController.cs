@@ -67,7 +67,7 @@ namespace TestToken.Controllers
             return StatusCode(response.StatusCode, response.Message);
         }
         [Authorize(Policy = "Admin")]
-        [HttpPut("UpdateBrand")]
+        [HttpPut("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(int id , [FromBody]BrandDto brandDto)
         {
             if (!ModelState.IsValid)

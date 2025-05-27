@@ -97,7 +97,7 @@ namespace TestToken.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpPut("EditProduct")]
+        [HttpPut("EditProduct/{id}")]
         public async Task<IActionResult> EditProduct(int id ,ProductDto productDto)
         {
             if (!ModelState.IsValid)
