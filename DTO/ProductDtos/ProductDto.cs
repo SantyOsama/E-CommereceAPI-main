@@ -1,4 +1,4 @@
-﻿namespace TestToken.DTO.ProductDto
+﻿namespace TestToken.DTO.ProductDtos
 {
     public class ProductDto
     {

@@ -1,5 +1,5 @@
 ﻿using TestToken.DTO;
-using TestToken.DTO.ProductDto;
+using TestToken.DTO.ProductDtos;
 using TestToken.Models;
 using TestToken.Repositories.GenericRepository;
 

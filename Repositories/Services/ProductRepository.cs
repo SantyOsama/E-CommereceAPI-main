@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TestToken.Data;
 using TestToken.DTO;
-using TestToken.DTO.ProductDto;
+using TestToken.DTO.ProductDtos;
 using TestToken.Models;
 using TestToken.Repositories.GenericRepository;
 using TestToken.Repositories.Interfaces;

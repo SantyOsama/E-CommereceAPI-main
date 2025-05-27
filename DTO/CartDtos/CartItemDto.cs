@@ -1,9 +1,11 @@
-﻿namespace TestToken.DTO.CartDtos
+﻿using TestToken.DTO.ProductDtos;
+namespace TestToken.DTO.CartDtos
 {
     public class CartItemDto
     {
         public int quantity { get; set; }
         public int? CartId { get; set; }
         public int? ProductId { get; set; }
+        public ProductDto Product { get; set; }
     }
 }

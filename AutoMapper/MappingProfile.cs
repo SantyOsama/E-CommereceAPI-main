@@ -3,7 +3,7 @@ using TestToken.DTO;
 using TestToken.DTO.CartDtos;
 using TestToken.DTO.OrderDto;
 using TestToken.DTO.PaymentDto;
-using TestToken.DTO.ProductDto;
+using TestToken.DTO.ProductDtos;
 using TestToken.DTO.UserDtos;
 using TestToken.DTO.WishlistDto;
 using TestToken.Models;
@@ -27,6 +27,9 @@ namespace TestToken.AutoMapper
                 .ForMember(dest => dest.Category, opt => opt.Ignore()) 
                 .ForMember(dest => dest.Brand, opt => opt.Ignore())
                 .ForMember(dest => dest.Reviews, opt => opt.Ignore());
+            CreateMap<Product, ProductDto>()
+               .ForMember(dest => dest.ImageFile, opt => opt.Ignore());
+
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.ImageFile, opt => opt.Ignore());
             CreateMap<Review, ReviewDto>().ReverseMap();

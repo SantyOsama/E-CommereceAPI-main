@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestToken.DTO;
-using TestToken.DTO.ProductDto;
+using TestToken.DTO.ProductDtos;
 using TestToken.Repositories.Interfaces;
 using TestToken.Repositories.Services;
 using TestToken.UOW;

@@ -30,7 +30,7 @@ namespace TestToken.Repositories.Services
                     Message = "Items not found!!",
                     IsSucceeded = false,
                     StatusCode = 404,
-                    model = new List<CartItem>()
+                    model = new List<CartItemDto>()
                 };
             }
             var CartList =_mapper.Map<List<CartItemDto>>(cartItems);
