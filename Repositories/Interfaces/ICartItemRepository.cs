@@ -7,7 +7,7 @@ namespace TestToken.Repositories.Interfaces
 {
     public interface ICartItemRepository :IGenericRepository<CartItem>
     {
-        Task<ResponseDto> GetAllItems();
+        Task<ResponseDto> GetAllItems(int id);
         Task<ResponseDto> GetItemById(int id);
         Task<ResponseDto> AddItem(CartItemDto item);   
         Task<ResponseDto> UpdateItem(int id , CartItem cartItem);

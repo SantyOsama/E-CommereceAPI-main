@@ -17,12 +17,12 @@ namespace TestToken.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("Items")]
-        public async Task<IActionResult> GetItems()
+        [HttpGet("Items/{cartId}")]
+        public async Task<IActionResult> GetItems(int cartId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var response = await _unitOfWork.CartItems.GetAllItems();
+            var response = await _unitOfWork.CartItems.GetAllItems(cartId);
             if (response.IsSucceeded)
                 return Ok(response);
             return StatusCode(response.StatusCode, new { response.Message });
@@ -53,7 +53,7 @@ namespace TestToken.Controllers
 
         [Authorize(Policy = "Admin")]
         [HttpPut("UpdateItem")]
-        public async Task<IActionResult> UpdateItem(int id ,CartItem cartItem)
+        public async Task<IActionResult> UpdateItem(int id , [FromBody] CartItem cartItem)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

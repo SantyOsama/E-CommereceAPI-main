@@ -21,10 +21,11 @@ namespace TestToken.Repositories.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto> GetAllItems()
+        public async Task<ResponseDto> GetAllItems(int cartId)
         {
             var cartItems = await _context.CartItems
                 .Include(ci => ci.Product)
+                .Where(ci => ci.CartId == cartId)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -32,7 +33,7 @@ namespace TestToken.Repositories.Services
             {
                 return new ResponseDto
                 {
-                    Message = "Items not found!",
+                    Message = "No items found for this cart.",
                     IsSucceeded = false,
                     StatusCode = 404,
                     model = new List<CartItemDto>()
@@ -40,6 +41,7 @@ namespace TestToken.Repositories.Services
             }
 
             var dtoList = _mapper.Map<List<CartItemDto>>(cartItems);
+
             return new ResponseDto
             {
                 IsSucceeded = true,
@@ -47,6 +49,7 @@ namespace TestToken.Repositories.Services
                 model = dtoList
             };
         }
+
 
         public async Task<ResponseDto> GetItemById(int id)
         {
